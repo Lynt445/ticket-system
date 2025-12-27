@@ -1,36 +1,177 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Event Ticketing System
 
-## Getting Started
+A comprehensive event ticketing platform built with Next.js 16, featuring M-Pesa integration, QR code validation, analytics, and multi-role user management.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Event Management**: Create and manage events with multiple ticket types
+- **M-Pesa Integration**: Secure payment processing with STK Push
+- **QR Code System**: Encrypted QR codes with version control for security
+- **Role-Based Access**: Super Admin, Event Manager, Scanner, and User roles
+- **Analytics Dashboard**: Comprehensive event and ticket analytics
+- **Ticket Transfers**: Secure ticket transfer system with OTP verification
+- **Marketplace**: Resale tickets functionality
+- **Real-time Notifications**: Email and WhatsApp notifications
+
+## Tech Stack
+
+- **Frontend**: Next.js 16, React 19, Tailwind CSS, TypeScript
+- **Backend**: Next.js API Routes, MongoDB with Mongoose
+- **Authentication**: NextAuth.js with JWT
+- **Payments**: M-Pesa Daraja API
+- **Email**: SendGrid
+- **Storage**: Cloudinary (images)
+- **QR Codes**: Encrypted with CryptoJS
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- MongoDB Atlas account
+- M-Pesa Daraja API credentials
+- SendGrid account
+- Cloudinary account
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd ticket-system
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Fill in your environment variables in `.env.local`:
+   ```env
+   MONGODB_URI=mongodb+srv://...
+   NEXTAUTH_SECRET=your-secret-key
+   NEXTAUTH_URL=http://localhost:3000
+   JWT_SECRET=your-jwt-secret
+   SENDGRID_API_KEY=SG.xxx
+   MPESA_ENCRYPTION_KEY=32-char-key
+   QR_ENCRYPTION_KEY=32-char-key
+   ENCRYPTION_KEY=32-char-key
+   ```
+
+4. **Database Setup**
+   ```bash
+   # Create database indexes
+   npm run setup:indexes
+
+   # Create super admin user
+   npm run create:admin
+   ```
+
+5. **Start Development Server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## Project Structure
+
+```
+ticket-system/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   ├── (auth)/           # Authentication pages
+│   ├── (dashboard)/      # Dashboard pages
+│   ├── (public)/         # Public pages
+│   └── admin/            # Admin pages
+├── lib/                   # Core utilities
+│   ├── db/               # Database models & connection
+│   ├── services/         # Business logic services
+│   └── auth.ts           # Authentication config
+├── components/           # React components
+├── scripts/             # Setup scripts
+└── docs/                # Documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Documentation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Complete API documentation is available in `docs/files1/2-API-Documentation.md`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Key Endpoints
 
-## Learn More
+- **Authentication**: `/api/auth/login`, `/api/auth/register`, `/api/auth/guest`
+- **Events**: `/api/events` (CRUD operations)
+- **Tickets**: `/api/tickets/reserve`, `/api/tickets/my-tickets`
+- **Payments**: `/api/payments/initiate`, `/api/payments/callback`
+- **Analytics**: `/api/analytics/[eventId]`
 
-To learn more about Next.js, take a look at the following resources:
+## User Roles
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Super Admin**: Platform administration, user management
+2. **Event Manager**: Create and manage events, view analytics
+3. **Scanner**: Validate tickets at event entry
+4. **User**: Purchase tickets, manage profile
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
+### Vercel Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Production Checklist
+
+- [ ] Set up production MongoDB cluster
+- [ ] Configure production M-Pesa credentials
+- [ ] Set up SendGrid for production email
+- [ ] Configure Cloudinary for image storage
+- [ ] Set up custom domain
+- [ ] Enable SSL certificate
+- [ ] Configure monitoring and error tracking
+
+See `docs/files1/3-Deployment-Guide.md` for detailed deployment instructions.
+
+## Development
+
+### Available Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run setup:indexes # Set up database indexes
+npm run create:admin  # Create super admin user
+```
+
+### Testing M-Pesa Integration
+
+Use M-Pesa sandbox environment for testing:
+- Test phone numbers: 254708374149, 254708374148, etc.
+- Test amount: Any amount between 1-70000 KES
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support and questions:
+- Check the documentation in the `docs/` folder
+- Create an issue in the repository
+- Review the API documentation for integration details

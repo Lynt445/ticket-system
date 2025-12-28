@@ -6,12 +6,12 @@ import { querySTKPushStatus } from "@/lib/services/payment.service";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { checkoutRequestID: string } }
+  { params }: { params: Promise<{ checkoutRequestID: string }> }
 ) {
   await dbConnect();
 
   try {
-    const { checkoutRequestID } = params;
+    const { checkoutRequestID } = await params;
 
     // Find transaction by checkout request ID
     const transaction = await Transaction.findOne({

@@ -15,7 +15,7 @@ const mpesaConfigSchema = z.object({
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -32,7 +32,8 @@ export async function PATCH(
       );
     }
 
-    const event = await Event.findById(params.id);
+    const { id } = await params;
+    const event = await Event.findById(id);
 
     if (!event) {
       return NextResponse.json(

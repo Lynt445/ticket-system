@@ -5,11 +5,11 @@ import Ticket from "@/lib/db/models/Ticket";
 import Transaction from "@/lib/db/models/Transaction";
 import Scan from "@/lib/db/models/Scan";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { eventId: string } }
+  { params }: { params: Promise<{ eventId: string }> }
 ) {
   await dbConnect();
   const session = await getServerSession(authOptions);
@@ -19,7 +19,7 @@ export async function GET(
   }
 
   try {
-    const { eventId } = params;
+    const { eventId } = await params;
 
     // Check if user owns this event or is admin
     const event = await Event.findById(eventId);

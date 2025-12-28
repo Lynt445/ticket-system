@@ -3,7 +3,7 @@ import dbConnect from "@/lib/db/mongodb";
 import Scan from "@/lib/db/models/Scan";
 import Event from "@/lib/db/models/Event";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   await dbConnect();

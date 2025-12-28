@@ -7,7 +7,7 @@ import puppeteer from "puppeteer";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -24,7 +24,8 @@ export async function GET(
       );
     }
 
-    const ticket = await Ticket.findById(params.id)
+    const { id } = await params;
+    const ticket = await Ticket.findById(id)
       .populate("eventId")
       .populate("userId", "name email");
 

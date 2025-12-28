@@ -6,12 +6,13 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    const event = await Event.findById(params.id).populate("managerId", "name");
+    const { id } = await params;
+    const event = await Event.findById(id).populate("managerId", "name");
 
     if (!event) {
       return NextResponse.json(
@@ -81,11 +82,12 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
+    const { id } = await params;
 
     if (!session) {
       return NextResponse.json(
